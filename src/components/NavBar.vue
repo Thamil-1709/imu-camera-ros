@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 
-import { Bolt,House } from 'lucide-vue-next';
+import { Bolt, House, Camera as CameraIcon } from 'lucide-vue-next';
+
 import { RouterLink } from 'vue-router';
 
 defineProps({
@@ -18,6 +19,9 @@ const count = ref(0)
     </RouterLink>
     <RouterLink to="/settings">
       <Bolt />
+    </RouterLink>
+    <RouterLink to="/camera">
+      <CameraIcon />
     </RouterLink>
   </nav>
 </template>
