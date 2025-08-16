@@ -16,10 +16,11 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import ROSLIB from 'roslib';
+import { useConfigStore } from '../store/Config';
 
-const latitude = ref(12.9715987);    // Example fixed latitude (change as needed)
-const longitude = ref(77.594566);    // Example fixed longitude (change as needed)
 const video = ref(null);
+const latitude = ref(null);
+const longitude = ref(null);
 
 let ros, cameraTopic, gpsTopic;
 let cameraInterval, gpsInterval;
@@ -27,7 +28,7 @@ let cameraInterval, gpsInterval;
 onMounted(async () => {
   // Connect to rosbridge_server (change to your ROS IP/port)
   ros = new ROSLIB.Ros({
-    url: 'ws://localhost:9090',
+    url: `ws://${useConfigStore().ip}:${useConfigStore().port}` || 'ws://localhost:9090',
   });
 
   ros.on('connection', () => console.log('Connected to rosbridge_server'));
@@ -82,6 +83,11 @@ onMounted(async () => {
 
   // Publish fixed GPS coordinate every 1 second
   gpsInterval = setInterval(() => {
+    navigator.geolocation.getCurrentPosition(function(location) {
+  latitude.value = location.coords.latitude;
+  longitude.value = location.coords.longitude;
+  console.log(`Updated GPS: ${longitude.value}, ${latitude.value}`);
+});
     gpsTopic.publish(
       new ROSLIB.Message({
         header: {

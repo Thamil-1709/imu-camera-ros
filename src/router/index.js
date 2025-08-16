@@ -2,7 +2,7 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 
 import Home from '../pages/Home.vue'
 import Settings from '../pages/Settings.vue'
-import CameraPage from '../views/CameraPage.vue';
+import CameraPage from '../pages/CameraPage.vue';
 
 
 const routes = [

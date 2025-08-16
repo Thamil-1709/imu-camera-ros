@@ -1,0 +1,14 @@
+    # Default for all text files (automatic conversion based on OS)
+* text=auto
+
+# Enforce LF for scripts (even on Windows)
+*.sh text eol=lf
+*.pl text eol=lf
+
+# Enforce CRLF for Windows-specific files (e.g., batch scripts)
+*.bat text eol=crlf
+
+# Explicitly mark binary files to prevent line ending conversion
+*.png binary
+*.jpg binary
+
