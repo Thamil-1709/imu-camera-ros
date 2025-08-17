@@ -32,7 +32,7 @@ nav {
   position: sticky;
   bottom: 0;
   justify-content: space-between;
-  padding: 1rem;
+  padding: .5rem;
   background-color: #ffffff;
   color: rgb(14, 13, 13);
   border-bottom: rgba(134, 134, 134, 0.2) 1px solid;

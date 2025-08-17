@@ -1,6 +1,6 @@
 <template>
   <div class="camera-page">
-    <h1>Camera Feed + Fixed GPS ROS Publisher</h1>
+    <span>Camera Feed + Fixed GPS ROS Publisher</span>
 
     <div class="gps">
       <p><strong>Publishing fixed Latitude:</strong> {{ latitude }}</p>
@@ -15,7 +15,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import ROSLIB from 'roslib';
+import  'https://cdn.jsdelivr.net/npm/roslib@1.4.1/build/roslib.min.js';
 import { useConfigStore } from '../store/Config';
 
 const video = ref(null);
@@ -24,11 +24,39 @@ const longitude = ref(null);
 
 let ros, cameraTopic, gpsTopic;
 let cameraInterval, gpsInterval;
+const permissions = [
+  'camera',
+  'geolocation',
+  'top-level-storage-access',
+];
+
+async function processPermissions() {
+  for (const permission of permissions) {
+    const result = await getPermission(permission);
+    console.log(result);
+  }
+}
+async function getPermission(permission) {
+  try {
+    let result;
+    if (permission === "top-level-storage-access") {
+      result = await navigator.permissions.query({
+        name: permission,
+        requestedOrigin: window.location.origin,
+      });
+    } else {
+      result = await navigator.permissions.query({ name: permission });
+    }
+    return `${permission}: ${result.state}`;
+  } catch (error) {
+    return `${permission} (not supported)`;
+  }
+}
 
 onMounted(async () => {
   // Connect to rosbridge_server (change to your ROS IP/port)
   ros = new ROSLIB.Ros({
-    url: `ws://${useConfigStore().ip}:${useConfigStore().port}` || 'ws://localhost:9090',
+    url: `ws://${useConfigStore().ip}:${useConfigStore().port}` ,
   });
 
   ros.on('connection', () => console.log('Connected to rosbridge_server'));
@@ -49,11 +77,18 @@ onMounted(async () => {
   });
 
   // Access webcam
+
+
+await processPermissions(
+
+);
+
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     video.value.srcObject = stream;
   } catch (err) {
     console.error('Camera access denied:', err);
+    alert('Camera access denied. Please allow camera access.');
     return;
   }
 

@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export const useConfigStore = defineStore("Config",{
     state:()=>{
         return {
-            ip:localStorage.getItem('ip') || 'http://localhost:3000',
+            ip:localStorage.getItem('ip') || 'localhost',
             port : localStorage.getItem('port') || '3000'
 
         }

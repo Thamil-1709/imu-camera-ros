@@ -22,6 +22,7 @@
                 <p>{{ gyroscopeData.z }}</p>
             </div>  
         </div>
+        <CameraPage />
     </div>
 
 </template>
@@ -33,6 +34,7 @@ import { useConfigStore } from '../store/Config';
 import { onMounted ,onUnmounted} from 'vue';
 import { Rotate3d } from 'lucide-vue-next';
 import { useDeviceMotion ,useDeviceOrientation} from '@vueuse/core'
+import CameraPage from './CameraPage.vue';
 
 const {
   acceleration,
@@ -48,9 +50,6 @@ const configStore = useConfigStore();
 const accelerometerData = ref({ x: acceleration.value.x || 0, y: acceleration.value.y || 0 , z: acceleration.value.z || 0 });
 const gyroscopeData = ref({ x: 0, y: 0, z: 0 });
 
-
-
-alert(JSON.stringify(acceleration.value));  
 
 </script>
 
